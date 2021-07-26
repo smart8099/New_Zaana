@@ -22,8 +22,14 @@ def loginpage(request):
             return redirect('create_note')
 
     else:
-
+        print(request.META)
         return render(request,"logins.html")  
+
+def bad_request(request, *args):
+    
+    from django.http import HttpResponseNotFound
+    return HttpResponseNotFound('<h4>Ups, we can’t find that page</h4>')
+            
 
 
 def registerpage(request):

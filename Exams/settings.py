@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ekjw&y)m980+!j)3^j4tai)x#8ljc2u0)-o2u$9hs4-tqv_nss'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -121,7 +121,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -130,6 +129,8 @@ from django.contrib.messages import constants as messages
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS=[BASE_DIR/'static']
+ADMINS = (('Webmaster','emuhiydeen6@gmail.com'),('admin','abdulbasitm810@gmail.com'))
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 

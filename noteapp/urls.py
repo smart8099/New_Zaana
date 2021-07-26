@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (loginpage,registerpage,why_zaana,policy,about,password_reset,createnote,signout,
  delete_note,edit_note,download_note,view_notes, search_note,quotes)
 
-
+handler404 = 'noteapp.views.bad_request'
 urlpatterns=[
 
     path('',loginpage,name='login'),
