@@ -5,25 +5,67 @@ from django.contrib.auth.decorators import login_required
 from .forms import Notes_Form
 from .models import Notes
 from django.shortcuts import get_object_or_404
-def loginpage(request):
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(username = username,password=password)
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.contrib.auth.views import LoginView,LogoutView, PasswordChangeDoneView,PasswordChangeView,PasswordResetConfirmView,PasswordResetCompleteView
 
-        if user is not None:
-            print(user)
-            auth.login(request,user)
-            messages.success(request,f'welcome{user.username} ')
-            return redirect('create_note')
 
-        else:
-            messages.error(request,"invalid credentials")  
-            return redirect('create_note')
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
 
-    else:
-        print(request.META)
-        return render(request,"logins.html")  
+    def form_valid(self, form):
+        user = form.get_user()
+        messages.success(self.request, f'Welcome {user.username}!')
+        return super().form_valid(form)
+
+class CustomLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        user = request.user
+        messages.success(request, f"Goodbye, {user.username}")
+        return super().dispatch(request, *args, **kwargs)
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name ='registration/password_change_form.html'
+    success_url='/'
+
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request,'Password changed successfully. Please log in again.')
+        auth.logout(self.request)
+        return redirect(self.success_url)
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+    success_url = '/'
+ 
+     
+
+# class CustomPasswordChangeDoneView(PasswordChangeDoneView):
+#     template_name ='registration/password_change_done.html'
+    
+
+# from django.contrib.auth.views import 
+
+# def loginpage(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = auth.authenticate(username = username,password=password)
+
+#         if user is not None:
+#             print(user)
+#             auth.login(request,user)
+#             messages.success(request,f'welcome {user.username} ')
+#             return redirect('create_note')
+
+#         else:
+#             messages.error(request,"invalid credentials")  
+#             return redirect('create_note')
+
+#     else:
+#         print(request.META)
+#         return render(request,"registration/login.html")  
 
 def bad_request(request, *args):
     
@@ -82,15 +124,15 @@ def policy(request):
 def about(request):
     return render(request,'About.html')    
 
-def password_reset(request):
-    if request.method =='POST':
+# def password_reset(request):
+#     if request.method =='POST':
 
-        print(True)
-    else:
-         return render(request,"Password_reset.html")    
+#         print(True)
+#     else:
+#          return render(request,"Password_reset.html")    
 
 
-@login_required(login_url='login')   
+@login_required()   
 def createnote(request):
     
 
@@ -119,13 +161,13 @@ def createnote(request):
             messages.error(request,'there are errors in your form')    
         return redirect('create_note')
 
-def signout(request):
-    if request.method == "POST":
-        auth.logout(request)
-        messages.success(request,"Goodbye")
-        return redirect('login')    
+# def signout(request):
+#     if request.method == "POST":
+#         auth.logout(request)
+#         messages.success(request,"Goodbye")
+#         return redirect('login')    
 
-@login_required(login_url='login')   
+@login_required()   
 def edit_note(request,id):
     # dictionary for initial data with 
     # field names as keys
@@ -148,7 +190,7 @@ def edit_note(request,id):
   
     return render(request, "update_view.html", context)
    
-@login_required(login_url='login')   
+@login_required()   
 def delete_note(request,id):
     if request.method == 'POST':
 
@@ -157,7 +199,7 @@ def delete_note(request,id):
         return redirect('view_note')
     return render(request,'delete_view.html')
 	
-@login_required(login_url='login')   
+@login_required()   
 def view_notes(request):
     id = request.user.id
     
@@ -201,10 +243,11 @@ def render_to_pdf(template_src, context_dict={}):
 def download_note(request,id):
     try:
         note = Notes.objects.get(id = id)     #you can filter using order_id as well
+  
     except:
             return HttpResponse("505 Not Found")
     data = {
-        'username':note.user_id,
+        'username':note.user,
         'title':note.title,
         'note':note.note,
 

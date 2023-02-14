@@ -26,7 +26,7 @@
                 <div class="row d-flex justify-content-center">
                   <input type="submit" value="Login" class="btn btn-secondary mx-auto">
                   <input type="submit" value="SignUp" class="btn btn-outline-info mx-auto " onclick="location.href='{% url 'register' %}' ">
-                  <a href="password_reset" class="text-muted">Forgot Password</a>
+                  <a href="{% url 'password_reset' %}" class="text-muted">Forgot Password</a>
                 </div>
                 
               </form>

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ekjw&y)m980+!j)3^j4tai)x#8ljc2u0)-o2u$9hs4-tqv_nss'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -56,6 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Exams.urls'
+
 
 TEMPLATES = [
     {
@@ -107,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -130,6 +131,21 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS=[BASE_DIR/'static']
 ADMINS = (('Webmaster','emuhiydeen6@gmail.com'),('admin','abdulbasitm810@gmail.com'))
+
+
+LOGIN_URL='/'
+LOGIN_REDIRECT_URL='/create_note/'
+LOGOUT_REDIRECT_URL='/'
+
+# EMAIL_HOST = 'smpt.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST = 'abdulbasitm810@gmail.com'
+# EMAIL_PASSWORD =""
+# EMAIL_USE_TLS=''
+# DEFAULT_FROM_EMAIL = 'abdulbasitm810@gmail.com'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
