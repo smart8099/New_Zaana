@@ -1,8 +1,8 @@
-{%load static%}
+{% load static %}
 {% include 'base.html' %}
-{% block content %}
 
- <section id="login" class="bg-light py-5">
+{% block content %}
+  <section id="login" class="bg-light py-5">
     <div class="container">
       <div class="row">
         <div class="col-md-6 mx-auto">
@@ -13,9 +13,9 @@
             </div>
             <div class="card-body">
               <form action="{% url 'login' %}" method="POST">
-                {%csrf_token%}
+                {% csrf_token %}
                 <div class="form-group">
-                  <label for="username">Username</label>
+                  <label for="username">Username/Email</label>
                   <input type="text" name="username" class="form-control" required>
                 </div>
 
@@ -25,7 +25,8 @@
                 </div>
                 <div class="row d-flex justify-content-center">
                   <input type="submit" value="Login" class="btn btn-secondary mx-auto">
-                  <input type="submit" value="SignUp" class="btn btn-outline-info mx-auto " onclick="location.href='{% url 'register' %}' ">
+                  <button type="button" class="btn btn-outline-info mx-auto" onclick="window.location.href='{% url 'register' %}'">SignUp</button>
+
                   <a href="{% url 'password_reset' %}" class="text-muted">Forgot Password</a>
                 </div>
                 
@@ -36,9 +37,8 @@
       </div>
     </div>
   </section>
+{% endblock %}
 
-{%endblock%}
-<!-- Footer -->
 <footer id="main-footer" class="py-4 bg-primary text-white text-center">
   Copyright &copy;
    Mustapha Adamu 2021

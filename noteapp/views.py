@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+import logging
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,6 +10,9 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView,LogoutView, PasswordChangeDoneView,PasswordChangeView,PasswordResetConfirmView,PasswordResetCompleteView
 
+
+# Standard instance of a logger with __name__
+stdlogger = logging.getLogger(__name__)
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -75,6 +79,7 @@ def bad_request(request, *args):
 
 
 def registerpage(request):
+    stdlogger.info("Call to register form method")
     if request.method == 'POST':
         # Get form values
         first_name = request.POST['first_name']
@@ -241,11 +246,12 @@ def render_to_pdf(template_src, context_dict={}):
     return None
 
 def download_note(request,id):
+    stdlogger.info(f"User {request.user.id} has downloaded his note with id {id}")
     try:
         note = Notes.objects.get(id = id)     #you can filter using order_id as well
   
     except:
-            return HttpResponse("505 Not Found")
+            return HttpResponse("404 Not Found")
     data = {
         'username':note.user,
         'title':note.title,
